@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -o errexit -o nounset -o pipefail
 
+# NSSA_ prefix should used for all Netspective Studios Service Appliance (NSSA) env vars
+
 export NSSA_IS_WSL=0
 if [[ "$(< /proc/version)" == *@(Microsoft|WSL)* ]]; then
     if [[ "$(< /proc/version)" == *@(WSL2)* ]]; then
