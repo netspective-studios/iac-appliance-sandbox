@@ -1,0 +1,61 @@
+---
+- name: Appliance Initial
+  hosts: all
+  vars_files:
+    - ../conf/appliance.secrets.ansible-vars.yml
+    - ../conf/appliance.common.ansible-vars.yml
+  tasks:
+    - name: Install standard packages
+      apt:
+        name: ['htop', 'tree', 'jq', 'fail2ban', 'vim', 'mosh', 'ufw', 'prometheus-node-exporter', 'python-pip', 'inetutils-traceroute', 'iperf']
+        update_cache: yes
+
+    - name: Install jsonnet
+      file: state=link src={{appliance_setup_path}}/bin/jsonnet-v0.11.2 dest=/usr/bin/jsonnet mode=a+x force=yes
+
+    - name: Install docker-gen
+      file: state=link src={{appliance_setup_path}}/bin/docker-gen-v0.7.4 dest=/usr/bin/docker-gen mode=a+x force=yes
+
+    - name: Install Prometheus osquery_exporter binary
+      file: state=link src={{appliance_setup_path}}/bin/prometheus-osquery-exporter-vHEAD,f719795,Jan2017 dest=/usr/bin/prometheus-osquery-exporter mode=a+x force=yes
+
+    - name: Install Prometheus osquery_exporter systemd service
+      copy: 
+        src: ../templates/prometheus-osquery-exporter.service
+        dest: /etc/systemd/system/prometheus-osquery-exporter.service
+
+    - name: Enable prometheus-osquery-exporter service and make sure it's running
+      systemd:
+        name:  prometheus-osquery-exporter
+        enabled: yes
+        state: started
+
+    - name: Get useful .vimrc for admin user
+      get_url: url=https://raw.githubusercontent.com/amix/vimrc/master/vimrcs/basic.vim dest=/home/{{ appliance_admin_user }}/.vimrc
+
+    - name: Reset UFW firewall
+      ufw:
+        state=reset
+
+    - name: Allow SSH access on instance
+      ufw: >
+        rule=allow
+        name=OpenSSH
+
+    - name: Set to deny incoming requests by default
+      ufw: >
+        default=deny
+
+    - name: Turn on UFW
+      ufw: >
+        state=enabled
+
+    - name: Set memory limit in GRUB
+      lineinfile: >
+        dest=/etc/default/grub
+        regexp=^GRUB_CMDLINE_LINUX_DEFAULT
+        line='GRUB_CMDLINE_LINUX_DEFAULT="cgroup_enable=memory swapaccount=1"'
+
+    - name: Load new GRUB config
+      command: update-grub
+
