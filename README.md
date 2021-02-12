@@ -4,12 +4,14 @@
 
 Common services appliance(s) IaC for creating:
 
-* Netspective Studios **Buildmasters** (VMs or bare metal servers allowing CI/CD targets to build polyglot software)
-* Netspective Studios **Engineering Sandboxes** (VMs or bare metal servers for engineering polyglot software in a determinstically reproducible way across developers and development teams)
+* Netspective Studios **Buildmasters** (VMs or bare metal servers allowing CI/CD targets to *build* determinstically reproducible polyglot software)
+* Netspective Studios **Engineering Sandboxes** (WSL, VMs, or bare metal servers for engineering polyglot software in a determinstically reproducible way across developers and development teams)
 
 ## Server software requirements
 
-Any OS on a virtual or physical machine which supports Ansible and all dependencies. Unless you're an expert with [Ansible](https://www.ansible.com/) skills, use a WSL2 Debian instance for *Engineering Sandboxes* or [Debian network install](https://www.debian.org/CD/netinst/) if create a custom VM or using appliances on bare metal. The network install creates the smallest footprint server so it's the most secure and requires minimal hardening for security.
+Any Debian based OS (e.g. Ubuntu) on a virtual or physical machine which supports Ansible and all dependencies. Unless you're an expert with [Ansible](https://www.ansible.com/) skills, use a WSL2 Debian instance for *Engineering Sandboxes* or [Debian network install](https://www.debian.org/CD/netinst/) for a custom VM or using appliances on bare metal. The network install creates the smallest footprint server so it's the most secure and requires minimal hardening for security.
+
+TODO: We may allow non-Debian OSs such Windows, MacOS, or other Linux distributions if there's enough interest and contributors
 
 ## Setup the operating system
 
@@ -40,32 +42,32 @@ NOTE: the user you create is called the *admin user* below.
 
 ## Prepare your appliance for software
 
-After Ubuntu operating system installation is completed, log into the server as the *admin user* (see above).
+After your operating system installation is completed via either WSL, a VM, or bare metal deployment, log into the server as the *admin user* (see above).
 
 Bootstrap the core utilities:
 
     sudo apt update && sudo apt install net-tools curl -y && \
     curl https://raw.githubusercontent.com/netspective-studios/service-appliances/master/bin/bootstrap.sh | bash
 
-After bootstrap.sh is complete, exit the shell.
+After `bootstrap.sh` is complete, exit the shell.
 
 ## Review your specific appliance variables
 
-After you've exited, log back in as the *admin user* and review the `appliance.secrets.ansible-vars.yml` file to customize it for your installation. 
+After you've exited, log back in as the *admin user* and review the `secrets.ansible-vars.yml` file to customize it for your installation. 
 
-    cd /etc/netspective-service-appliances/conf
-    sudo vi appliance.secrets.ansible-vars.yml
+    cd /etc/netspective-service-appliances/[applianceId]
+    sudo vi secrets.d/secrets.ansible-vars.yml
 
-The **appliance.secrets-tmpl.ansible-vars.yml** file is a template (sample), and the **appliance.secrets.ansible-vars.yml** is what will be used by the Ansible and related setup utilities.
+The **secrets-tmpl.ansible-vars.yml** file is a template (sample), and the **secrets.ansible-vars.yml** is what will be used by the Ansible and related setup utilities.
 
-If you have any custom playbooks, add them to `/etc/netspective-service-appliances/playbooks` and symlink them to the proper `/etc/netspective-service-appliances/appliances/[type]/playbooks.d`. The `bin/setup.sh` utility will run all numbered playbooks in `appliances/[type]/playbooks.d` in numerical order (where `[type]` is, for example `buildmaster` or `engineering-sandbox`). 
+If you have any custom playbooks, add them to `/etc/netspective-service-appliances/playbooks` and symlink them to the proper `/etc/netspective-service-appliances/appliances/[applianceId]/playbooks.d`. The `bin/setup.sh` utility will run all numbered playbooks in `appliances/[applianceId]/playbooks.d` in numerical order (where `[type]` is, for example, `buildmaster` or `engineering-sandbox`).
 
 ## Install software
 
-    cd /etc/netspective-service-appliances
-    bash bin/setup.sh
+    cd /etc/netspective-service-appliances/[applianceId]
+    ./setup.sh
 
-After setup is completed, reboot the server (Docker setup will be incomplete without a reboot):
+After setup is completed, reboot the appliance if a VM or bare metal (or just close and reopen if WSL on Windows):
 
     sudo reboot
 
@@ -73,7 +75,7 @@ After setup is completed, reboot the server (Docker setup will be incomplete wit
 
 The NSSA comes with everything you need to run a secure, minimally hardended, appliance for custom on-premise or cloud software. 
 
-### For All Appliance
+### Installed for all appliances
 
 * ZSH with Oh My ZSH! and Antigen
 * Ansible and ARA
@@ -82,15 +84,9 @@ The NSSA comes with everything you need to run a secure, minimally hardended, ap
 * Python and PIP
 * htop, jsonnet, jq
 
-### For Engineering Sandbox Appliance
+### Available for specific appliances (see `README.md` in each appliance for what's installed)
 
-* TODO
-
-### For Buildmaster Appliance
-
-* Base Ubuntu 18.04 LTS with automatic security updates turned on
 * UFW and fail2ban
-* OpenSSH
 * Docker with [Container Configuration Framework](/netspective-studios/container-config-framework) and [docker-gen](https://github.com/jwilder/docker-gen)
 * Samba with admin home available as a share
 * prometheus-node-exporter

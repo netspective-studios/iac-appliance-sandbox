@@ -1,4 +1,5 @@
 ---
+# TODO: add ZSH configuration from github.com/shah/engineering-sandbox-debian as the common config
 - hosts: all
   vars:
     zsh_antigen_bundles_extras:
