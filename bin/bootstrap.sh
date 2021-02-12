@@ -3,6 +3,15 @@ set -o errexit -o nounset -o pipefail
 
 # NSSA_ prefix used for all Netspective Studios Service Appliance (NSSA) env vars
 
+export NSSA_IS_WSL=0
+if [[ "$(< /proc/version)" == *@(Microsoft|WSL)* ]]; then
+    if [[ "$(< /proc/version)" == *@(WSL2)* ]]; then
+        export NSSA_IS_WSL=2
+    else
+        export NSSA_IS_WSL=1
+    fi
+fi
+
 # TODO: check if non-Debian (e.g. non-Ubuntu) based OS and stop; later we'll add ability for non-Debian distros
 
 export NSSA_HOME=/etc/netspective-service-appliances
@@ -29,10 +38,10 @@ title "Download distribution into $NSSA_HOME"
 sudo git clone --recurse https://github.com/netspective-studios/service-appliances $NSSA_HOME
 
 title "Provision ARA setup playbook"
-sudo ansible-playbook -i "localhost," -c local $NSSA_ALL_ANSIBLE_PLAYBOOKS/ara.ansible-playbook.yml
+sudo ansible-playbook -i "localhost," -c local $NSSA_ALL_ANSIBLE_PLAYBOOKS/ara.ansible-playbook.yml --extra-vars="nssa_is_wsl=$NSSA_IS_WSL"
 
 title "Provision ZSH setup playbook for $(whoami)"
-sudo ansible-playbook -i "localhost," -c local $NSSA_ALL_ANSIBLE_PLAYBOOKS/zsh.ansible-playbook.yml --extra-vars="zsh_user=$(whoami)"
+sudo ansible-playbook -i "localhost," -c local $NSSA_ALL_ANSIBLE_PLAYBOOKS/zsh.ansible-playbook.yml --extra-vars="zsh_user=$(whoami) nssa_is_wsl=$NSSA_IS_WSL"
 
 echo "****************************************************"
 echo "** Netspective Service Appliance setup complete.  **"

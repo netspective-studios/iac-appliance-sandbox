@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 set -o errexit -o nounset -o pipefail
 
+export NSSA_IS_WSL=0
+if [[ "$(< /proc/version)" == *@(Microsoft|WSL)* ]]; then
+    if [[ "$(< /proc/version)" == *@(WSL2)* ]]; then
+        export NSSA_IS_WSL=2
+    else
+        export NSSA_IS_WSL=1
+    fi
+fi
+
 # TODO: check if secrets.d/secrets.ansible-vars.yml exists:
 #       if yes, run it through Ansible lint
 #       if not, copy from template and stop:
@@ -54,7 +63,7 @@ zsh -i -c setupsolarized dircolors.256dark
 
 title "Run all numbered playbooks for $(whoami) appliance $NSSA_APPLIANCE from $NSSA_APPLIANCE_PLAYBOOKS"
 for playbook in `ls $NSSA_APPLIANCE_PLAYBOOKS/*.ansible-playbook.yml | egrep "^$NSSA_APPLIANCE_PLAYBOOKS/[0-9]" | sort -V`; do 
-	sudo ansible-playbook -i "localhost," -c local $playbook --extra-vars="NSSA_user=$(whoami)"
+	sudo ansible-playbook -i "localhost," -c local $playbook --extra-vars="NSSA_user=$(whoami) nssa_is_wsl=$NSSA_IS_WSL"
 done;
 
 echo "****************************************************"
