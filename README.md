@@ -2,6 +2,11 @@
 
 **STATUS**: *This project is work in progress and is not ready for even basic experimentation.*
 
+MAJOR changes TODO:
+* Migrate away from BASH to Ansible wherever possible (e.g. osQuery)
+* Implementation Ansible Galaxy automation
+* Implement TODOs in all *.sh and other sources
+
 Common services appliance(s) IaC for creating:
 
 * Netspective Studios **Buildmasters** (VMs or bare metal servers allowing CI/CD targets to *build* determinstically reproducible polyglot software)
