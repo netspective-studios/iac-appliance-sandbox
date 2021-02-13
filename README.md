@@ -4,6 +4,7 @@
 
 MAJOR changes TODO:
 * Migrate away from BASH to Ansible wherever possible (e.g. osQuery)
+* Try to remove all requirements for `sudo` in shell scripts in favor of Ansible [become](https://docs.ansible.com/ansible/latest/user_guide/become.html#become-directives)
 * Implementation Ansible Galaxy automation
 * Implement TODOs in all *.sh and other sources
 
