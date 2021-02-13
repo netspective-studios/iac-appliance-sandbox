@@ -1,4 +1,5 @@
 # The following are passed in a --extra-vars via Ansible CLI
+# - nssa_is_privileged (0 if not running as sudo/root)
 # - nssa_user (the user that we're deploying for)
 # - nssa_home (absolute path to NSSA installation)
 # - nssa_is_wsl (0 for no, 1 for WSL1, 2 for WSL2)
