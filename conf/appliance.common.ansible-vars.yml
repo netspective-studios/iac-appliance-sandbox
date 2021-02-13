@@ -1,4 +1,10 @@
-appliance_setup_path: /etc/netspective-service-appliances
+# The following are passed in a --extra-vars via Ansible CLI
+# - nssa_user (the user that we're deploying for)
+# - nssa_home (absolute path to NSSA installation)
+# - nssa_is_wsl (0 for no, 1 for WSL1, 2 for WSL2)
+# - nssa_appliance_defn_home (absolute path to root of appliance defn)
+# - nssa_appliance_conf_home (usually {{nssa_appliance_defn_home}}/conf)
+# - nssa_appliance_secrets_home (usually {{nssa_appliance_defn_home}}/secrets.d)
 
 docker_users: ["{{ appliance_admin_user }}"]
 # See https://github.com/bertvv/ansible-role-samba/blob/docker-tests/test.yml for all vars

@@ -12,7 +12,7 @@
         name: docker
 
     - name: Download ctop
-      file: state=link src={{appliance_setup_path}}/bin/ctop-v0.7.1 dest=/usr/bin/ctop mode=a+x force=yes
+      file: state=link src={{nssa_appliance_defn_home}}/bin/ctop-v0.7.1 dest=/usr/bin/ctop mode=a+x force=yes
 
     - name: Open Docker daemon, HTTP(S), and Swarm ports
       ufw: >

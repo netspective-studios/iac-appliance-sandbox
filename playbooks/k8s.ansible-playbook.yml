@@ -9,4 +9,4 @@
         name: geerlingguy.kubernetes        
 
     - name: Download rancher cli
-      file: state=link src={{appliance_setup_path}}/bin/crancher dest=/usr/bin/rancher mode=a+x force=yes  
+      file: state=link src={{nssa_appliance_defn_home}}/bin/crancher dest=/usr/bin/rancher mode=a+x force=yes  

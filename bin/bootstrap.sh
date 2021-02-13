@@ -15,7 +15,7 @@ fi
 # TODO: check if non-Debian (e.g. non-Ubuntu) based OS and stop; later we'll add ability for non-Debian distros
 
 export NSSA_HOME=/etc/netspective-service-appliances
-export NSSA_ALL_ANSIBLE_PLAYBOOKS=${NSSA_HOME:-$NSSA_HOME/playbooks}
+export NSSA_ALL_ANSIBLE_PLAYBOOKS=${NSSA_ALL_ANSIBLE_PLAYBOOKS:-$NSSA_HOME/playbooks}
 
 title() {
     local color='\033[1;37m'
@@ -38,14 +38,13 @@ title "Download distribution into $NSSA_HOME"
 sudo git clone --recurse https://github.com/netspective-studios/service-appliances $NSSA_HOME
 
 title "Provision ARA setup playbook"
-sudo ansible-playbook -i "localhost," -c local $NSSA_ALL_ANSIBLE_PLAYBOOKS/ara.ansible-playbook.yml --extra-vars="nssa_is_wsl=$NSSA_IS_WSL"
+sudo ansible-playbook -i "localhost," -c local $NSSA_ALL_ANSIBLE_PLAYBOOKS/ara.ansible-playbook.yml --extra-vars="nssa_user=$(whoami) nssa_home=$NSSA_HOME nssa_is_wsl=$NSSA_IS_WSL"
 
 title "Provision ZSH setup playbook for $(whoami)"
-sudo ansible-playbook -i "localhost," -c local $NSSA_ALL_ANSIBLE_PLAYBOOKS/zsh.ansible-playbook.yml --extra-vars="zsh_user=$(whoami) nssa_is_wsl=$NSSA_IS_WSL"
+sudo ansible-playbook -i "localhost," -c local $NSSA_ALL_ANSIBLE_PLAYBOOKS/zsh.ansible-playbook.yml --extra-vars="zsh_user=$(whoami) nssa_user=$(whoami) nssa_home=$NSSA_HOME nssa_is_wsl=$NSSA_IS_WSL"
 
-echo "****************************************************"
-echo "** Netspective Service Appliance setup complete.  **"
-echo "** ---------------------------------------------- **"
-echo "** Exit the shell, then log back in to continue   **"
-echo "** the appliance setup process.                   **"
-echo "****************************************************"
+echo "******************************************************************"
+echo "** Netspective Studios Service Appliance (NSSA) setup complete. **"
+echo "** ------------------------------------------------------------ **"
+echo "** Exit the shell, then log back in to continue setup.          **"
+echo "******************************************************************"
