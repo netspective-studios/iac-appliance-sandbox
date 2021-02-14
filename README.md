@@ -3,8 +3,9 @@
 **STATUS**: *This project is work in progress and is not ready for even basic experimentation.*
 
 MAJOR changes TODO:
-* Migrate away from BASH to Ansible wherever possible (e.g. osQuery)
+* Migrate away from BASH to Ansible wherever possible (e.g. osQuery in setup.sh)
 * Try to remove all requirements for `sudo` in shell scripts in favor of Ansible [become](https://docs.ansible.com/ansible/latest/user_guide/become.html#become-directives)
+* Try to make sure all the Ansible scripts could possibly be used to generate Dockerc containers, too
 * Implementation Ansible Galaxy automation
 * Implement TODOs in all *.sh and other sources
 

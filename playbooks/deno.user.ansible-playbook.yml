@@ -1,0 +1,11 @@
+- name: Install Deno TypesScript runtime
+  hosts: all
+  tasks:
+    - name: Download Deno install.sh script
+      get_url:
+        url: https://deno.land/x/install/install.sh
+        dest: {{nssa_tmp_home}}/install-deno.sh
+
+    - name: Install Deno into {{nssa_home_user_bin}}
+      shell: |
+        DENO_INSTALL="{{nssa_home_user_bin}}" sh {{nssa_tmp_home}}/install-deno.sh

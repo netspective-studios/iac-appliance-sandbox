@@ -2,10 +2,16 @@
 # - nssa_is_privileged (0 if not running as sudo/root)
 # - nssa_user (the user that we're deploying for)
 # - nssa_home (absolute path to NSSA installation)
+# - nssa_home_user (absolute path to NSSA user-specific installation files)
 # - nssa_is_wsl (0 for no, 1 for WSL1, 2 for WSL2)
 # - nssa_appliance_defn_home (absolute path to root of appliance defn)
 # - nssa_appliance_conf_home (usually {{nssa_appliance_defn_home}}/conf)
 # - nssa_appliance_secrets_home (usually {{nssa_appliance_defn_home}}/secrets.d)
+
+# NSSA namespaces everything in either `nssa_home` (global to appliance) or `nssa_user_home` (local to user)
+nssa_user_bin_home: "{{ nssa_user_home }}/bin"
+nssa_tmp_home: "/tmp/nss"
+nssa_user_tmp_home: "{{ nssa_tmp_home }}/{{ nssa_user }}"
 
 docker_users: ["{{ appliance_admin_user }}"]
 # See https://github.com/bertvv/ansible-role-samba/blob/docker-tests/test.yml for all vars

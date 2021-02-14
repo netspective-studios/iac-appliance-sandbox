@@ -1,0 +1,11 @@
+- name: Install Just command runner
+  hosts: all
+  tasks:
+    - name: Download Just install.sh script
+      get_url:
+        url: https://just.systems/install.sh
+        dest: {{nssa_tmp_home}}/install-just.sh
+
+    - name: Install Just into {{nssa_home_user_bin}}
+      shell: |
+        bash {{nssa_tmp_home}}/install-just.sh --to "{{nssa_home_user_bin}}"

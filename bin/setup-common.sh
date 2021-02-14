@@ -75,7 +75,7 @@ zsh -i -c setupsolarized dircolors.256dark
 
 title "Run all numbered playbooks for $(whoami) appliance $NSSA_APPLIANCE from $NSSA_APPLIANCE_PLAYBOOKS_HOME"
 for playbook in `ls $NSSA_APPLIANCE_PLAYBOOKS_HOME/*.ansible-playbook.yml | egrep "^$NSSA_APPLIANCE_PLAYBOOKS_HOME/[0-9]" | sort -V`; do 
-	sudo ansible-playbook -i "localhost," -c local $playbook --extra-vars="nssa_is_privileged=$NSSA_IS_PRIVILEGED nssa_user=$(whoami) nssa_home=$NSSA_HOME nssa_appliance_id=$NSSA_APPLIANCE nssa_appliance_defn_home=$NSSA_APPLIANCE_HOME nssa_appliance_conf_home=$NSSA_APPLIANCE_CONF_HOME nssa_appliance_secrets_home=$NSSA_APPLIANCE_SECRETS_HOME nssa_is_wsl=$NSSA_IS_WSL"
+	sudo ansible-playbook -i "localhost," -c local $playbook --extra-vars="nssa_is_privileged=$NSSA_IS_PRIVILEGED nssa_user=$(whoami) nssa_home=$NSSA_HOME nssa_home_user="/home/$(whoami)/.nssa" nssa_appliance_id=$NSSA_APPLIANCE nssa_appliance_defn_home=$NSSA_APPLIANCE_HOME nssa_appliance_conf_home=$NSSA_APPLIANCE_CONF_HOME nssa_appliance_secrets_home=$NSSA_APPLIANCE_SECRETS_HOME nssa_is_wsl=$NSSA_IS_WSL"
 done;
 
 echo "******************************************************************"
