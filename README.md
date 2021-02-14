@@ -3,7 +3,7 @@
 **STATUS**: *This project is work in progress and is not ready for even basic experimentation.*
 
 MAJOR changes TODO:
-* Migrate away from BASH to Ansible wherever possible (e.g. osQuery in setup.sh)
+* Migrate away from BASH to Ansible wherever possible (e.g. osQuery in setup.sh) -- meaning, `/bin/bootstrap.sh` and `/bin/*.sh` should be as thin as possible
 * Try to remove all requirements for `sudo` in shell scripts in favor of Ansible [become](https://docs.ansible.com/ansible/latest/user_guide/become.html#become-directives)
 * Try to make sure all the Ansible scripts could possibly be used to generate Dockerc containers, too
 * Implementation Ansible Galaxy automation
@@ -13,6 +13,7 @@ Common services appliance(s) IaC for creating:
 
 * Netspective Studios **Buildmasters** (VMs or bare metal servers allowing CI/CD targets to *build* determinstically reproducible polyglot software)
 * Netspective Studios **Engineering Sandboxes** (WSL, VMs, or bare metal servers for engineering polyglot software in a determinstically reproducible way across developers and development teams)
+* Netspective Studios *Containers* (Ansible called within containers to simplify `Dockerfile` configurations?)
 
 ## Server software requirements
 
