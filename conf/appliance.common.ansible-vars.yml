@@ -10,6 +10,7 @@
 
 # NSSA namespaces everything in either `nssa_home` (global to appliance) or `nssa_user_home` (local to user)
 nssa_user_bin_home: "{{ nssa_user_home }}/bin"
+nssa_user_lang_home: "{{ nssa_user_home }}/lang"
 nssa_tmp_home: "/tmp/nss"
 nssa_user_tmp_home: "{{ nssa_tmp_home }}/{{ nssa_user }}"
 
