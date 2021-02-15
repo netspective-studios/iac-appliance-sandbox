@@ -1,0 +1,15 @@
+cwd := `pwd`
+appliance_type_id := `basename $(pwd)`
+
+# setup the {{appliance_type_id}} appliance
+setup:
+    #!/usr/bin/env bash
+    set -euxo pipefail
+    echo "Setting up this asset as a {{appliance_type_id}} appliance type in {{cwd}}"
+    # source ../../bin/setup-common.sh {{cwd}}
+    
+upgrade:
+    #!/usr/bin/env bash
+    set -euxo pipefail
+    echo "Upgrading this asset as a {{appliance_type_id}} appliance type in {{cwd}}"
+    # source ../../bin/upgrade-common.sh {{cwd}}

@@ -1,5 +1,7 @@
 # Services Appliances Infrastructure as Code (IaC)
 
+Netspective Studios Service Appliance (NSSA) framework.
+
 **STATUS**: *This project is work in progress and is not ready for even basic experimentation.*
 
 MAJOR changes TODO:
@@ -14,6 +16,22 @@ Common services appliance(s) IaC for creating:
 * Netspective Studios **Buildmasters** (VMs or bare metal servers allowing CI/CD targets to *build* determinstically reproducible polyglot software)
 * Netspective Studios **Engineering Sandboxes** (WSL, VMs, or bare metal servers for engineering polyglot software in a determinstically reproducible way across developers and development teams)
 * Netspective Studios *Containers* (Ansible called within containers to simplify `Dockerfile` configurations?)
+
+## CLI operations controller
+
+NSSA CLI operations are performed with the `just` [command runner](https://github.com/casey/just). The `nssactl` in the root directory of this repo is an executable `just` Justfile for controlling NSSA operations.
+
+To list the commands available:
+
+```bash
+./nssactl --list
+```
+
+To see which appliances are availabe:
+
+```bash
+./nssactl inspect-appliance-types
+```
 
 ## Server software requirements
 
@@ -72,8 +90,9 @@ If you have any custom playbooks, add them to `/etc/netspective-service-applianc
 
 ## Install software
 
-    cd /etc/netspective-service-appliances/[applianceId]
-    ./setup.sh
+    cd /etc/netspective-service-appliances
+    ./nssactl inspect-appliances-types
+    ./nssactl setup-appliance [appliance_type_id]
 
 After setup is completed, reboot the appliance if a VM or bare metal (or just close and reopen if WSL on Windows):
 

@@ -17,30 +17,33 @@ fi
 export NSSA_HOME=/etc/netspective-service-appliances
 export NSSA_ALL_ANSIBLE_PLAYBOOKS=${NSSA_ALL_ANSIBLE_PLAYBOOKS:-$NSSA_HOME/playbooks}
 
-title() {
+report() {
     local color='\033[1;37m'
     local nc='\033[0m'
     printf "\n${color}$1${nc}\n"
 }
 
-title "Install Python and Ansible"
+report "Install Python and Ansible"
 sudo apt-get install -y software-properties-common
 sudo apt-add-repository ppa:ansible/ansible -y
 sudo add-apt-repository universe
 sudo apt-get update
 sudo apt-get install -y curl wget ansible git make python-pip
 
-title "Install roles from Ansible Galaxy"
+report "Install Just command runner into /bin"
+curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | sudo bash -s -- --to /bin
+
+report "Install roles from Ansible Galaxy"
 sudo ansible-galaxy install viasite-ansible.zsh
 sudo ansible-galaxy install robertdebock.ara
 
-title "Download distribution into $NSSA_HOME"
+report "Download distribution into $NSSA_HOME"
 sudo git clone --recurse https://github.com/netspective-studios/service-appliances $NSSA_HOME
 
-title "Provision ARA setup playbook"
+report "Provision ARA setup playbook"
 sudo ansible-playbook -i "localhost," -c local $NSSA_ALL_ANSIBLE_PLAYBOOKS/ara.ansible-playbook.yml --extra-vars="nssa_user=$(whoami) nssa_home=$NSSA_HOME nssa_is_wsl=$NSSA_IS_WSL"
 
-title "Provision ZSH setup playbook for $(whoami)"
+report "Provision ZSH setup playbook for $(whoami)"
 sudo ansible-playbook -i "localhost," -c local $NSSA_ALL_ANSIBLE_PLAYBOOKS/zsh.ansible-playbook.yml --extra-vars="zsh_user=$(whoami) nssa_user=$(whoami) nssa_home=$NSSA_HOME nssa_is_wsl=$NSSA_IS_WSL"
 
 echo "******************************************************************"

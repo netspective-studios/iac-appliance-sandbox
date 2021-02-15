@@ -1,0 +1,11 @@
+#!/usr/bin/env -S just --justfile
+
+appliances_home := "appliances" 
+
+# list all available appliance types
+inspect-appliance-types:
+    @find {{appliances_home}} -maxdepth 1 -mindepth 1 -type d -exec basename {} \;
+
+# setup active WSL instance, VM, or bare metal servers as a specific appliance type
+setup-appliance appliance_type_id:
+    just --justfile {{appliances_home}}/{{appliance_type_id}}/Justfile --working-directory {{appliances_home}}/{{appliance_type_id}} setup
