@@ -8,6 +8,7 @@ MAJOR changes TODO:
 * Migrate away from BASH to Ansible wherever possible (e.g. osQuery in setup.sh) -- meaning, `/bin/bootstrap.sh` and `/bin/*.sh` should be as thin as possible
 * Try to remove all requirements for `sudo` in shell scripts in favor of Ansible [become](https://docs.ansible.com/ansible/latest/user_guide/become.html#become-directives)
 * Integrate [Nomad](https://www.nomadproject.io/), a simple and flexible workload orchestrator to deploy and manage containers and non-containerized applications across on-prem and clouds at scale, into NSSA. Allowing both Nomad and Docker together might be very powerful for edge servers.
+* Integrate [ARA](https://github.com/ansible-community/ara) for recording and observing Ansible Playbook output
 * Try to make sure all the Ansible scripts could possibly be used to generate Dockerc containers, too
 * Implementation Ansible Galaxy automation
 * Implement TODOs in all *.sh and other sources
@@ -101,7 +102,7 @@ After setup is completed, reboot the appliance if a VM or bare metal (or just cl
 
 ## Batteries Included
 
-The NSSA comes with everything you need to run a secure, minimally hardended, appliance for custom on-premise or cloud software. 
+The NSSA comes with everything you need to run a secure, minimally hardended, appliance for custom on-premise or cloud software for containerized or non-containerized workloads. 
 
 ### Installed for all appliances
 
@@ -110,16 +111,14 @@ The NSSA comes with everything you need to run a secure, minimally hardended, ap
 * osQuery
 * Outbound SMTP relay via DragonFly MTA (dma) and mailutils, no incoming e-mails are allowed though
 * Python and PIP
-* htop, jsonnet, jq
+* `just`, `htop`, `jsonnet`, `jq`
 
 ### Available for specific appliances (see `README.md` in each appliance for what's installed)
 
-* UFW and fail2ban
-* Docker with [Container Configuration Framework](/netspective-studios/container-config-framework) and [docker-gen](https://github.com/jwilder/docker-gen)
+* UFW and fail2ban (useful for non-WSL VMs bare metal servers)
+* Docker with [docker-gen](https://github.com/jwilder/docker-gen)
+* [Nomad](https://www.nomadproject.io/) workload orchestrator
 * Samba with admin home available as a share
-* prometheus-node-exporter
-* prometheus-osquery-exporter
+* `prometheus-node-exporter`
+* `prometheus-osquery-exporter`
 
-## TODO
-
-* ARA doesn't seem to be recording Ansible Playbook output, need to check out why
