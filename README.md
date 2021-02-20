@@ -6,6 +6,9 @@ Netspective Studios Service Appliance (NSSA) framework.
 
 MAJOR changes TODO:
 * Migrate away from BASH to Ansible wherever possible (e.g. osQuery in setup.sh) -- meaning, `/bin/bootstrap.sh` and `/bin/*.sh` should be as thin as possible
+* Use [ASDF](https://asdf-vm.com/) to manage multiple runtime versions with a single CLI tool
+  * Use [Ansible role to install ASDF](https://github.com/markosamuli/ansible-asdf)
+  * Use [ASDF plugins](https://asdf-vm.com/#/plugins-all) for all lanaguages we support instead of creating custom Ansible roles for each language
 * Try to remove all requirements for `sudo` in shell scripts in favor of Ansible [become](https://docs.ansible.com/ansible/latest/user_guide/become.html#become-directives)
 * Integrate [Nomad](https://www.nomadproject.io/), a simple and flexible workload orchestrator to deploy and manage containers and non-containerized applications across on-prem and clouds at scale, into NSSA. Allowing both Nomad and Docker together might be very powerful for edge servers.
 * Integrate [ARA](https://github.com/ansible-community/ara) for recording and observing Ansible Playbook output
